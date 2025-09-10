@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("Inicializando aplicação...");
+    console.log("Inicializando aplicação Laed Menopausa...");
     initApp();
 });
 
@@ -7,6 +7,7 @@ function initApp() {
     createParticles();
     setupEventListeners();
     loadUserData();
+    updateReminderTime(); // Adiciona atualização dinâmica do lembrete
 }
 
 function createParticles() {
@@ -32,66 +33,28 @@ function createParticles() {
 
 function setupEventListeners() {
     const voiceBtn = document.getElementById('voiceBtn');
-    if (voiceBtn) {
-        voiceBtn.addEventListener('click', () => {
-            console.log("Botão de voz clicado");
-            handleVoiceCommand();
-        });
-    }
-
     const loginBtn = document.getElementById('loginBtn');
-    if (loginBtn) {
-        loginBtn.addEventListener('click', () => {
-            console.log("Botão de login clicado");
-            showLoginModal();
-        });
-    }
-
     const profileBtn = document.getElementById('profileBtn');
-    if (profileBtn) {
-        profileBtn.addEventListener('click', () => {
-            console.log("Botão de perfil clicado");
-            showProfile();
-        });
-    }
-
     const addToDiaryBtn = document.getElementById('addToDiaryBtn');
-    if (addToDiaryBtn) {
-        addToDiaryBtn.addEventListener('click', () => {
-            console.log("Botão Adicionar ao Diário clicado");
-            addToDiary();
-        });
-    }
-
     const purchaseBtns = document.querySelectorAll('.purchase-btn');
-    purchaseBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log(`Botão de compra (plano ${this.dataset.plan}) clicado`);
-            handlePurchase(this.dataset.plan);
-        });
-    });
-
     const closeModalBtn = document.querySelector('.close');
-    if (closeModalBtn) {
-        closeModalBtn.addEventListener('click', () => {
-            console.log("Botão de fechar modal clicado");
-            closeModal();
-        });
-    }
+
+    if (voiceBtn) voiceBtn.addEventListener('click', handleVoiceCommandStart);
+    if (loginBtn) loginBtn.addEventListener('click', showLoginModal);
+    if (profileBtn) profileBtn.addEventListener('click', showProfile);
+    if (addToDiaryBtn) addToDiaryBtn.addEventListener('click', addToDiary);
+    if (purchaseBtns.length) purchaseBtns.forEach(btn => btn.addEventListener('click', handlePurchase));
+    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
 
     window.addEventListener('click', function(event) {
         const modal = document.getElementById('loginModal');
-        if (event.target === modal) {
-            console.log("Clicado fora do modal, fechando...");
-            closeModal();
-        }
+        if (modal && event.target === modal) closeModal();
     });
 }
 
 function loadUserData() {
-    // Simulação de dados iniciais (pode ser expandido com API ou localStorage)
-    console.log("Carregando dados do usuário...");
+    console.log("Carregando dados do usuário... (simulação)");
+    // Simulação: Pode ser expandido com API ou localStorage
 }
 
 function showToast(message) {
@@ -132,66 +95,63 @@ function handlePurchase(plan) {
 }
 
 // Reconhecimento de voz
-if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'pt-BR';
-    recognition.continuous = false;
+function handleVoiceCommandStart() {
+    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'pt-BR';
+        recognition.continuous = false;
+        const voiceBtn = document.getElementById('voiceBtn');
 
-    const voiceBtn = document.getElementById('voiceBtn');
-
-    recognition.onstart = function() {
         if (voiceBtn) {
             voiceBtn.innerHTML = '<i class="fas fa-circle"></i>';
             voiceBtn.style.background = 'var(--secondary)';
         }
-        showToast("Ouvindo...");
-        console.log("Reconhecimento de voz iniciado");
-    };
 
-    recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript.toLowerCase();
-        if (voiceBtn) {
-            voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-            voiceBtn.style.background = 'var(--accent)';
-        }
-        console.log(`Comando de voz recebido: ${transcript}`);
-        processVoiceCommand(transcript);
-    };
+        recognition.onstart = () => {
+            showToast("Ouvindo...");
+            console.log("Reconhecimento de voz iniciado");
+        };
 
-    recognition.onerror = function(event) {
-        if (voiceBtn) {
-            voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-            voiceBtn.style.background = 'var(--accent)';
-        }
-        showToast("Erro no reconhecimento de voz: " + event.error);
-        console.error("Erro no reconhecimento de voz:", event.error);
-    };
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript.toLowerCase();
+            if (voiceBtn) {
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                voiceBtn.style.background = 'var(--accent)';
+            }
+            console.log(`Comando de voz recebido: ${transcript}`);
+            processVoiceCommand(transcript);
+        };
 
-    if (voiceBtn) {
-        voiceBtn.addEventListener('click', () => recognition.start());
+        recognition.onerror = (event) => {
+            if (voiceBtn) {
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                voiceBtn.style.background = 'var(--accent)';
+            }
+            showToast(`Erro no reconhecimento de voz: ${event.error}`);
+            console.error("Erro no reconhecimento de voz:", event.error);
+        };
+
+        recognition.start();
+    } else {
+        showToast("Reconhecimento de voz não suportado neste navegador.");
+        console.warn("SpeechRecognition não disponível");
     }
 }
 
 function processVoiceCommand(transcript) {
     if (transcript.includes('confirmar') || transcript.includes('dose')) {
-        console.log("Processando comando: Confirmar dose");
         confirmDose();
     } else if (transcript.includes('comprar') || transcript.includes('reposição')) {
-        console.log("Processando comando: Comprar");
         showPurchaseOptions();
     } else if (transcript.includes('lembrete') || transcript.includes('lembrar')) {
-        console.log("Processando comando: Lembrete");
         setReminder();
     } else if (transcript.includes('estatísticas') || transcript.includes('estatistica')) {
-        console.log("Processando comando: Estatísticas");
         showStats();
     } else if (transcript.includes('perfil')) {
-        console.log("Processando comando: Perfil");
         showProfile();
     } else {
         showToast("Comando não reconhecido. Tente: 'confirmar dose', 'comprar', 'lembrete' ou 'perfil'");
-        console.log("Comando não reconhecido:", transcript);
     }
 }
 
@@ -199,15 +159,16 @@ function confirmDose() {
     showToast("Dose confirmada! Continue com o ótimo trabalho no seu tratamento.");
     const dosesTaken = document.getElementById('dosesTaken');
     const remainingDoses = document.getElementById('remainingDoses');
-    if (dosesTaken && remainingDoses) {
-        let currentValue = parseInt(dosesTaken.textContent) || 0;
-        dosesTaken.textContent = currentValue + 1;
-        let [current, total] = remainingDoses.textContent.split(' de ');
-        current = parseInt(current) || 0;
+    const progressBar = document.getElementById('progressBar');
+    const progressPercentage = document.getElementById('progressPercentage');
+
+    if (dosesTaken && remainingDoses && progressBar && progressPercentage) {
+        let currentDoses = parseInt(dosesTaken.textContent) || 0;
+        dosesTaken.textContent = currentDoses + 1;
+
+        let [current, total] = remainingDoses.textContent.split(' de ').map(Number);
         if (current > 0) {
             remainingDoses.textContent = `${current - 1} de ${total}`;
-            const progressBar = document.getElementById('progressBar');
-            const progressPercentage = document.getElementById('progressPercentage');
             const progress = ((total - (current - 1)) / total) * 100;
             progressBar.style.width = `${progress}%`;
             progressPercentage.textContent = `${Math.round(progress)}%`;
@@ -225,4 +186,19 @@ function setReminder() {
 
 function showStats() {
     showToast("Exibindo estatísticas!");
+}
+
+function updateReminderTime() {
+    const badge = document.querySelector('.reminder-item .badge');
+    if (badge) {
+        const now = new Date();
+        const reminderTime = new Date(now);
+        reminderTime.setHours(20, 0, 0, 0); // Define para 20:00 de hoje
+        if (now > reminderTime) reminderTime.setDate(reminderTime.getDate() + 1); // Se passou, usa amanhã
+        const diffMs = reminderTime - now;
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        badge.textContent = `Em ${diffHours} horas e ${diffMinutes} minutos`;
+        setTimeout(updateReminderTime, 60000); // Atualiza a cada minuto
+    }
 }
