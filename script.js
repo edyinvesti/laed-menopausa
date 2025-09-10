@@ -7,7 +7,7 @@ function initApp() {
     createParticles();
     setupEventListeners();
     loadUserData();
-    updateReminderTime(); // Adiciona atualização dinâmica do lembrete
+    updateReminderTime();
 }
 
 function createParticles() {
@@ -43,10 +43,10 @@ function setupEventListeners() {
     if (loginBtn) loginBtn.addEventListener('click', showLoginModal);
     if (profileBtn) profileBtn.addEventListener('click', showProfile);
     if (addToDiaryBtn) addToDiaryBtn.addEventListener('click', addToDiary);
-    if (purchaseBtns.length) purchaseBtns.forEach(btn => btn.addEventListener('click', handlePurchase));
+    if (purchaseBtns.length) purchaseBtns.forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); handlePurchase(btn.dataset.plan); }));
     if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
 
-    window.addEventListener('click', function(event) {
+    window.addEventListener('click', (event) => {
         const modal = document.getElementById('loginModal');
         if (modal && event.target === modal) closeModal();
     });
@@ -54,7 +54,6 @@ function setupEventListeners() {
 
 function loadUserData() {
     console.log("Carregando dados do usuário... (simulação)");
-    // Simulação: Pode ser expandido com API ou localStorage
 }
 
 function showToast(message) {
@@ -94,7 +93,6 @@ function handlePurchase(plan) {
     showToast(`Compra do plano ${plan} iniciada!`);
 }
 
-// Reconhecimento de voz
 function handleVoiceCommandStart() {
     if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -134,7 +132,7 @@ function handleVoiceCommandStart() {
 
         recognition.start();
     } else {
-        showToast("Reconhecimento de voz não suportado neste navegador.");
+        showToast("Reconhecimento de voz não suportado neste navegador. Use o Chrome.");
         console.warn("SpeechRecognition não disponível");
     }
 }
@@ -193,7 +191,7 @@ function updateReminderTime() {
     if (badge) {
         const now = new Date();
         const reminderTime = new Date(now);
-        reminderTime.setHours(20, 0, 0, 0); // Define para 20:00 de hoje
+        reminderTime.setHours(20, 0, 0, 0); // 20:00 de hoje
         if (now > reminderTime) reminderTime.setDate(reminderTime.getDate() + 1); // Se passou, usa amanhã
         const diffMs = reminderTime - now;
         const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
