@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laed Menopausa - Seu Guia na Menopausa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/styles.css">
+</head>
+<body>
+    <!-- Animação de fundo com partículas -->
+    <div class="background-animation" id="particles-container"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-spa"></i>
+                <div>
+                    <span>Laed Menopausa</span>
+                    <div class="logo-subtitle">Seu equilíbrio em cada fase</div>
+                </div>
+            </div>
+            <div class="user-actions">
+                <button class="btn btn-secondary" id="profileBtn">
+                    <i class="fas fa-user"></i> Perfil
+                </button>
+                <button class="btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <div class="glass-card product-hero">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1584308666744-24d7c474f2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Laed Menopausa" id="productImage">
+                    <div class="badge" style="margin-top: 15px;">Encapsulado • Natural • 60 cápsulas</div>
+                </div>
+                <div class="product-info">
+                    <h1 class="product-title">Laed Menopausa</h1>
+                    <div class="product-subtitle">Complexo bioativo com alta disponibilidade 500mg</div>
+                    <p class="product-description">
+                        Desenvolvido com ingredientes 100% naturais, Laed Menopausa auxilia na saúde ovariana com hormona e associações, ajudando a reduzir ondas de calor, alterações de humor e demais sintomas desta fase.
+                    </p>
+                    
+                    <div class="product-features">
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Reduz ondas de calor</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Controla alterações de humor</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Melhora a qualidade do sono</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Auxiliar da saúde ovariana</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" id="addToDiaryBtn">
+                        <i class="fas fa-plus"></i> Adicionar ao Meu Diário
+                    </button>
+                </div>
+            </div>
+
+            <div class="dashboard">
+                <div class="glass-card medication-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Meu Tratamento</h3>
+                        <button class="btn btn-secondary" id="historyBtn">
+                            <i class="fas fa-history"></i> Histórico
+                        </button>
+                    </div>
+                    <div class="medication-info">
+                        <div class="info-item">
+                            <span class="info-label">Próxima dose</span>
+                            <span class="info-value" id="nextDose">Hoje, 20:00</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Doses restantes</span>
+                            <span class="info-value" id="remainingDoses">18 de 30</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Status do tratamento</span>
+                            <span class="info-value" id="treatmentStatus">No prazo</span>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Progresso do frasco</span>
+                                <span id="progressPercentage">40%</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" id="progressBar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Estatísticas</h3>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-calendar-check"></i>
+                            <div class="stat-value" id="adherenceRate">92%</div>
+                            <div class="stat-label">Adesão Semanal</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-check-circle"></i>
+                            <div class="stat-value" id="dosesTaken">12</div>
+                            <div class="stat-label">Doses Tomadas</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-thermometer-full"></i>
+                            <div class="stat-value" id="hotFlashes">-58%</div>
+                            <div class="stat-label">Ondas de Calor</div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-moon"></i>
+                            <div class="stat-value" id="sleepQuality">+35%</div>
+                            <div class="stat-label">Qualidade do Sono</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card reminder-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Próximos Lembretes</h3>
+                        <button class="btn btn-secondary" id="configureRemindersBtn">
+                            <i class="fas fa-bell"></i> Configurar
+                        </button>
+                    </div>
+                    <div class="reminder-list" id="reminderList">
+                        <div class="reminder-item">
+                            <div class="reminder-info">
+                                <div class="reminder-icon">
+                                    <i class="fas fa-capsules"></i>
+                                </div>
+                                <div>
+                                    <div class="reminder-time">20:00 - Hoje</div>
+                                    <div class="reminder-med">Laed Menopausa - 1 cápsula</div>
+                                </div>
+                            </div>
+                            <div class="badge">Em 4 horas e 42 minutos</div>
+                        </div>
+                        <div class="reminder-item">
+                            <div class="reminder-info">
+                                <div class="reminder-icon" style="background: var(--secondary);">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div>
+                                    <div class="reminder-time">09:00 - Segunda-feira</div>
+                                    <div class="reminder-med">Lembrete de compra - Reposição</div>
+                                </div>
+                            </div>
+                            <div class="badge">Em 3 dias</div>
+                        </div>
+                        <div class="reminder-item">
+                            <div class="reminder-info">
+                                <div class="reminder-icon" style="background: var(--accent);">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div>
+                                    <div class="reminder-time">14:00 - 15/08</div>
+                                    <div class="reminder-med">Consulta de acompanhamento</div>
+                                </div>
+                            </div>
+                            <div class="badge">Em 2 semanas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card purchase-section">
+                <h2 class="purchase-title">Seu frasco está acabando?</h2>
+                <p class="purchase-description">Garanta a continuidade do seu tratamento com praticidade e entrega rápida</p>
+                
+                <div class="purchase-options">
+                    <div class="purchase-option">
+                        <div class="option-title">1 Frasco (30 cápsulas)</div>
+                        <div class="option-price">R$ 89,90</div>
+                        <button class="btn btn-secondary purchase-btn" data-plan="1">Comprar</button>
+                    </div>
+                    <div class="purchase-option">
+                        <div class="option-title">2 Frascos</div>
+                        <div class="option-price">R$ 159,90</div>
+                        <div style="font-size: 12px; margin-bottom: 10px;">Economize R$ 20,00</div>
+                        <button class="btn purchase-btn" data-plan="2">Comprar</button>
+                    </div>
+                    <div class="purchase-option">
+                        <div class="option-title">3 Frascos</div>
+                        <div class="option-price">R$ 219,90</div>
+                        <div style="font-size: 12px; margin-bottom: 10px;">Economize R$ 50,00</div>
+                        <button class="btn purchase-btn" data-plan="3">Comprar</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Botão de ativação por voz -->
+    <button class="voice-btn" id="voiceBtn">
+        <i class="fas fa-microphone"></i>
+    </button>
+
+    <!-- Modal de Login -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="email" placeholder="E-mail" required>
+                <input type="password" placeholder="Senha" required>
+                <button type="submit" class="btn">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
